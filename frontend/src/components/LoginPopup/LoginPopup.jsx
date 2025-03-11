@@ -21,21 +21,18 @@ const LoginPopup = ({ setShowLogin }) => {
         password: ""
     });
 
-    // Handle input changes for login/signup form
     const onChangeHandler = (event) => {
         const name = event.target.name;
         const value = event.target.value;
         setData(data => ({ ...data, [name]: value }));
     };
 
-    // Handle input changes for reset password form
     const onResetPasswordChangeHandler = (event) => {
         const name = event.target.name;
         const value = event.target.value;
         setResetPasswordData(data => ({ ...data, [name]: value }));
     };
 
-    // Handle login or signup
     const onLogin = async (e) => {
         e.preventDefault();
 
@@ -46,43 +43,33 @@ const LoginPopup = ({ setShowLogin }) => {
             new_url += "/api/user/register";
         }
 
-        try {
-            const response = await axios.post(new_url, data);
-            if (response.data.success) {
-                setToken(response.data.token);
-                localStorage.setItem("token", response.data.token);
-                loadCartData({ token: response.data.token });
-                setShowLogin(false);
-                toast.success(`Welcome back, ${data.name || data.email}!`);
-            } else {
-                toast.error(response.data.message);
-            }
-        } catch (error) {
-            toast.error("An error occurred. Please try again.");
+        const response = await axios.post(new_url, data);
+        if (response.data.success) {
+            setToken(response.data.token);
+            localStorage.setItem("token", response.data.token);
+            loadCartData({ token: response.data.token });
+            setShowLogin(false);
+        } else {
+            toast.error(response.data.message);
         }
     };
 
-    // Handle forgot password
     const onForgotPassword = async (e) => {
         e.preventDefault();
 
-        try {
-            const response = await axios.post(`${url}/api/user/forgot-password`, {
-                email: resetPasswordData.email
-            });
+        // Send a request to the backend to initiate password reset
+        const response = await axios.post(`${url}/api/user/forgot-password`, {
+            email: resetPasswordData.email
+        });
 
-            if (response.data.success) {
-                toast.success("Password reset link sent to your email.");
-                setIsForgotPassword(false); // Reset the state
-            } else {
-                toast.error(response.data.message);
-            }
-        } catch (error) {
-            toast.error("An error occurred. Please try again.");
+        if (response.data.success) {
+            toast.success("Password reset link sent to your email.");
+            setIsForgotPassword(false); // Reset the state
+        } else {
+            toast.error(response.data.message);
         }
     };
 
-    // Handle reset password
     const onResetPassword = async (e) => {
         e.preventDefault();
 
@@ -91,21 +78,18 @@ const LoginPopup = ({ setShowLogin }) => {
             return;
         }
 
-        try {
-            const response = await axios.post(`${url}/api/user/reset-password`, {
-                email: resetPasswordData.email,
-                newPassword: resetPasswordData.newPassword
-            });
+        // Send a request to the backend to reset the password
+        const response = await axios.post(`${url}/api/user/reset-password`, {
+            email: resetPasswordData.email,
+            newPassword: resetPasswordData.newPassword
+        });
 
-            if (response.data.success) {
-                toast.success("Password reset successfully.");
-                setIsForgotPassword(false); // Reset the state
-                setCurrState("Login"); // Switch back to login
-            } else {
-                toast.error(response.data.message);
-            }
-        } catch (error) {
-            toast.error("An error occurred. Please try again.");
+        if (response.data.success) {
+            toast.success("Password reset successfully.");
+            setIsForgotPassword(false); // Reset the state
+            setCurrState("Login"); // Switch back to login
+        } else {
+            toast.error(response.data.message);
         }
     };
 
