@@ -1,0 +1,224 @@
+.must-try-section h2 {
+    text-align: left;
+    color: #262626;
+    font-weight: 500;
+}
+
+
+.must-try-section {
+    padding: 17px;
+    text-align: center;
+    position: relative;
+    width: 100%;
+    overflow: hidden; /* Ensure no horizontal scroll */
+}
+
+.must-try-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    width: 100%;
+}
+
+.must-try-slider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    position: relative;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.must-try-card {
+    width: 100%; /* Take full width of the container */
+    max-width: 400px; /* Adjust max-width as needed */
+    border-radius: 15px;
+    box-shadow: 0px 0px 10px #00000015;
+    transition: transform 0.5s ease-in-out;
+    animation: fadeIn 1s;
+    position: relative;
+    overflow: hidden; /* Ensure the image doesn't overflow */
+}
+
+.must-try-card:hover {
+    transform: scale(1.02);
+}
+
+.must-try-img-container {
+    position: relative;
+    width: 100%;
+    height: 300px; /* Adjust height as needed */
+    overflow: hidden; /* Ensure the image fits within the container */
+}
+
+.must-try-image {
+    width: 100%; /* Ensure the image takes full width */
+    height: 100%; /* Ensure the image takes full height */
+    object-fit: cover; /* Ensure the image covers the container */
+    border-radius: 15px 15px 0px 0px;
+}
+
+.must-try-badge {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    background-color: orange;
+    color: white;
+    padding: 4px 8px;
+    font-size: 12px;
+    font-weight: bold;
+    border-radius: 5px;
+    z-index: 2; /* Ensure the badge is above the image */
+}
+
+.must-try-info {
+    padding: 20px;
+    background-color: white; /* Add background for better readability */
+    border-radius: 0 0 15px 15px;
+}
+
+.must-try-name {
+    font-size: 20px;
+    font-weight: 500;
+    margin-bottom: 10px;
+}
+
+.must-try-price {
+    color: #FF4C24;
+    font-size: 22px;
+    font-weight: 500;
+    margin: 10px 0px;
+}
+
+.quantity-unit-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 15px 0;
+}
+
+.quantity-input {
+    width: 60px;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    text-align: center;
+}
+
+.unit-select {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    background-color: white;
+    cursor: pointer;
+}
+
+.add-to-cart-btn {
+    width: 100%;
+    padding: 10px;
+    background-color: #FF4C24;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.add-to-cart-btn:hover {
+    background-color: #e63b1a;
+}
+
+.slider-arrow {
+    background-color: rgba(0, 0, 0, 0.5);
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-20%);
+    z-index: 2; /* Ensure arrows are above the image */
+}
+
+.slider-arrow:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+.left-arrow {
+    left: 20px; /* Adjust position as needed */
+}
+
+.right-arrow {
+    right: 20px; /* Adjust position as needed */
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+.quantity-control {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.quantity-arrow {
+    background-color: #f0f0f0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+.quantity-arrow:hover {
+    background-color: #ddd;
+}
+
+.quantity-input {
+    width: 60px;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    text-align: center;
+}
+
+.unit-select {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    background-color: white;
+    cursor: pointer;
+}
+/* Hide the number input spinner */
+.quantity-input::-webkit-outer-spin-button,
+.quantity-input::-webkit-inner-spin-button {
+    -webkit-appearance: none; /* Hide arrows in WebKit browsers (Chrome, Safari) */
+    margin: 0; /* Remove default margin */
+}
+
+.quantity-input {
+    -moz-appearance: textfield; /* Hide arrows in Firefox */
+    appearance: textfield; /* Hide arrows in modern browsers */
+    width: 60px;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    text-align: center;
+}
