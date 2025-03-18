@@ -73,3 +73,10 @@
     animation: fadeInUp 0.8s ease-out forwards;
 }
 
+.food-item-desc {
+    color: #333; /* Ensure it's visible */
+    font-size: 14px;
+    max-width: 90%;
+    word-wrap: break-word;
+    display: block;
+}

@@ -18,6 +18,11 @@ const Navbar = ({ setShowLogin, setSearchQuery }) => {
     setToken("");
   };
 
+  //muorders
+  const goToOrders = () => {
+    navigate('/myorders');
+  };
+
   // Handle menu click
   const handleMenuClick = () => {
     setMenu("menu");
@@ -79,7 +84,7 @@ const Navbar = ({ setShowLogin, setSearchQuery }) => {
           <div className='navbar-profile'>
             <FiUser className="navbar-icon" />
             <ul className='navbar-profile-dropdown'>
-              <li> <AiOutlineShopping /> <p>Orders</p></li>
+              <li onClick={goToOrders}> <AiOutlineShopping /> <p>Orders</p></li>
               <hr />
               <li onClick={logout}> <FiLogOut /> <p>Logout</p></li> 
             </ul>

@@ -106,6 +106,9 @@ const FoodItem = ({ image, name, price, desc, id, mustTry }) => {
                 {desc && <p className="food-item-desc">{desc}</p>}
                 <p className="food-item-price">{currency} {price}</p>
                 <p>Price per Kg</p>
+                
+
+
             </div>
         </div>
     );
