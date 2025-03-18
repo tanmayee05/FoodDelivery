@@ -1,14 +1,12 @@
 import React, { useContext, useState } from "react";
 import "./FoodItem.css";
 import { StoreContext } from "../../Context/StoreContext";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
 
 const FoodItem = ({ image, name, price, desc, id, mustTry }) => {
     const { cartItems, addToCart, removeFromCart, url, currency } = useContext(StoreContext);
     const [quantity, setQuantity] = useState(""); // Allow empty input
-    const [unit, setUnit] = useState("kgs"); 
 
     // Handle quantity change
     const handleQuantityChange = (e) => {
@@ -20,12 +18,10 @@ const FoodItem = ({ image, name, price, desc, id, mustTry }) => {
 
     // Ensure a valid number when the input loses focus
     const handleBlur = () => {
-        if ( Number(quantity) < 1) {
+        if (Number(quantity) < 1) {
             setQuantity(1);
         }
     };
-
-    
 
     // Handle arrow clicks (up and down)
     const handleArrowClick = (direction) => {
@@ -45,13 +41,10 @@ const FoodItem = ({ image, name, price, desc, id, mustTry }) => {
         }
     
         const finalQuantity = Number(quantity);
-        addToCart(id, finalQuantity, unit);
+        addToCart(id, finalQuantity, "kgs"); // Quantity is always in kgs
     
         toast.success(`🛒 ${name} is added to cart!`, { position: "top-center", autoClose: 3000 });
     };
-    
-
-    
 
     return (
         <div className={`food-item ${mustTry ? "must-try" : ""}`}>
@@ -61,7 +54,7 @@ const FoodItem = ({ image, name, price, desc, id, mustTry }) => {
                 {/* Must Try Badge */}
                 {mustTry && <span className="must-try-badge">🔥 Must Try</span>}
 
-                {/* Quantity Input and Unit Selection */}
+                {/* Quantity Input */}
                 <div className="quantity-unit-container">
                     <div className="quantity-control">
                         <button 
@@ -85,14 +78,6 @@ const FoodItem = ({ image, name, price, desc, id, mustTry }) => {
                             ▲
                         </button>
                     </div>
-                    <select
-                        value={unit}
-                        onChange={(e) => setUnit(e.target.value)}
-                        className="unit-select"
-                    >
-                        <option value="kgs">kgs</option>
-                        <option value="grams">grams</option>
-                    </select>
                 </div>
 
                 {/* Add to Cart Button */}
@@ -106,9 +91,6 @@ const FoodItem = ({ image, name, price, desc, id, mustTry }) => {
                 {desc && <p className="food-item-desc">{desc}</p>}
                 <p className="food-item-price">{currency} {price}</p>
                 <p>Price per Kg</p>
-                
-
-
             </div>
         </div>
     );

@@ -8,7 +8,6 @@ const MustTryProducts = () => {
     const { mustTryItems, currency, url, addToCart } = useContext(StoreContext);
     const [currentIndex, setCurrentIndex] = useState(0);
     const [quantity, setQuantity] = useState(""); // Allow empty input
-    const [unit, setUnit] = useState("kgs");
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -33,7 +32,7 @@ const MustTryProducts = () => {
     };
 
     const handleBlur = () => {
-        if ( Number(quantity) < 1) {
+        if (Number(quantity) < 1) {
             setQuantity(1);
         }
     };
@@ -55,7 +54,7 @@ const MustTryProducts = () => {
     
         const item = mustTryItems[currentIndex];
         const finalQuantity = Number(quantity);
-        addToCart(item._id, finalQuantity, unit);
+        addToCart(item._id, finalQuantity);
         toast.success(`🛒 ${item.name} is added to cart!`, { position: "top-center", autoClose: 3000 });
     };
     
@@ -81,10 +80,6 @@ const MustTryProducts = () => {
                                         <input type="number" value={quantity} onChange={handleQuantityChange} onBlur={handleBlur} placeholder="ex: 1" className="quantity-input" />
                                         <button className="quantity-arrow up-arrow" onClick={() => handleArrowClick("up")}>▲</button>
                                     </div>
-                                    <select value={unit} onChange={(e) => setUnit(e.target.value)} className="unit-select"> 
-                                        <option value="kgs">kgs</option>
-                                        <option value="grams">grams</option>
-                                    </select>
                                 </div>
                                 <button className="add-to-cart-btn" onClick={handleAddToCart}>Add to Cart</button>
                             </div>
