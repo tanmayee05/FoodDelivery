@@ -8,13 +8,20 @@ const MustTryProducts = () => {
     const { mustTryItems, currency, url, addToCart } = useContext(StoreContext);
     const [currentIndex, setCurrentIndex] = useState(0);
     const [quantity, setQuantity] = useState(""); // Allow empty input
+    const [expanded, setExpanded] = useState(false); // State for toggling description
 
     useEffect(() => {
         const interval = setInterval(() => {
             setCurrentIndex((prevIndex) => (prevIndex + 1) % mustTryItems.length);
+            setExpanded(false); // Collapse description when switching items
         }, 6000);
         return () => clearInterval(interval);
     }, [mustTryItems.length]);
+
+    const toggleDescription = () => {
+        setExpanded(!expanded);
+    };
+
 
     const goToNext = () => {
         setCurrentIndex((prevIndex) => (prevIndex + 1) % mustTryItems.length);
@@ -72,8 +79,22 @@ const MustTryProducts = () => {
                             </div>
                             <div className="must-try-info">
                                 <h3 className="must-try-name">{mustTryItems[currentIndex].name}</h3>
+                                
+                                
+                                {/* ✅ Updated description with "Read More" functionality */}
+                                <p className={`food-item-desc ${expanded ? "expanded" : ""}`}>
+                                    {mustTryItems[currentIndex].description}
+                                </p>
+                                {mustTryItems[currentIndex].description.length > 100 && (
+                                    <span className="read-more" onClick={toggleDescription}>
+                                        {expanded ? "Read Less" : "Read More"}
+                                    </span>
+                                )}
+
+
                                 <p className="must-try-price">{currency} {mustTryItems[currentIndex].price}</p>
                                 <p>Price per kg</p>
+
                                 <div className="quantity-unit-container">
                                     <div className="quantity-control">
                                         <button className="quantity-arrow down-arrow" onClick={() => handleArrowClick("down")}>▼</button>

@@ -197,3 +197,29 @@
     transform: translateY(-50%);
     z-index: 10;
 }
+
+.food-item-desc {
+    color: black;
+    font-size: 14px;
+    display: block;
+    margin-top: 5px;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* Show only 2 lines initially */
+    -webkit-box-orient: vertical;
+    text-overflow: ellipsis;
+    cursor: pointer;
+}
+
+.food-item-desc.expanded {
+    -webkit-line-clamp: unset; /* Show full content when expanded */
+}
+
+.read-more {
+    color: blue;
+    font-size: 14px;
+    cursor: pointer;
+    display: inline;
+    margin-left: 5px;
+    text-decoration: underline;
+}

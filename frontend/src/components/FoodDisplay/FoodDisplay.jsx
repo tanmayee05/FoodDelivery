@@ -18,7 +18,7 @@ const FoodDisplay = ({ category }) => {
               image={item.image}
               name={item.name}
               price={item.price}
-              desc={item.desc}
+              description={item.description}
               mustTry={item.mustTry} // ✅ Ensure mustTry flag is passed
             />
           ) : null
