@@ -1,48 +1,113 @@
-.my-orders{
-    margin: 50px 0px;
+.my-orders {
+    margin: 50px 0;
+    padding: 20px;
+    font-family: 'Arial', sans-serif;
 }
-.my-orders .container{
+
+.my-orders h2 {
+    text-align: center;
+    color: #333;
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.my-orders .container {
     display: flex;
     flex-direction: column;
     gap: 20px;
     margin-top: 30px;
+    padding: 0 10px;
 }
-.my-orders-order{
+
+.my-orders-order {
     display: grid;
     grid-template-columns: 0.5fr 2fr 1fr 1fr 2fr 1fr;
     align-items: center;
-    gap: 30px;
+    gap: 20px;
     font-size: 14px;
-    padding: 10px 20px;
+    padding: 12px 20px;
     color: #454545;
     border: 1px solid tomato;
+    border-radius: 8px;
+    background-color: #fff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in-out;
 }
-.my-orders-order img{
+
+.my-orders-order:hover {
+    transform: translateY(-3px);
+    background-color: #fff7f7;
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+}
+
+.my-orders-order img {
     width: 50px;
+    transition: transform 0.3s ease-in-out;
 }
-.my-orders-order p span{
+
+.my-orders-order img:hover {
+    transform: scale(1.1);
+}
+
+.my-orders-order p {
+    margin: 0;
+    font-size: 14px;
+    color: #454545;
+}
+
+.my-orders-order p span {
     color: tomato;
 }
-.my-orders-order p b{
-    font-weight: 500;
+
+.my-orders-order p b {
+    font-weight: 600;
     color: #454545;
 }
-.my-orders button{
+
+.my-orders button {
     border: none;
-    padding: 12px 0px;
+    padding: 10px 12px;
     border-radius: 4px;
-    background-color: #FFE1E1;
+    background-color: #ff5757;
     cursor: pointer;
-    color: #454545;
+    color: white;
+    font-weight: 500;
+    transition: background 0.3s ease-in-out, transform 0.2s ease-in-out;
 }
-@media (max-width:900px) {
-    .my-orders-order{
+
+.my-orders button:hover {
+    background-color: #ff3333;
+    transform: scale(1.05);
+}
+
+/* Responsive Design */
+@media (max-width: 900px) {
+    .my-orders-order {
         grid-template-columns: 1fr 2fr 1fr;
-        row-gap: 5px;
+        row-gap: 10px;
         font-size: 12px;
+        padding: 10px;
     }
-    .my-orders-order button{
-        font-size: 10px;
+    .my-orders-order button {
+        font-size: 12px;
+        padding: 8px 10px;
     }
-    
+    .my-orders h2 {
+        font-size: 20px;
+    }
+}
+
+@media (max-width: 600px) {
+    .my-orders-order {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 10px;
+        padding: 12px;
+    }
+    .my-orders-order img {
+        margin: 0 auto;
+    }
+    .my-orders h2 {
+        font-size: 18px;
+    }
 }

@@ -68,6 +68,44 @@ const listMustTryFood = async (req, res) => {
     }
 };
 
+// ... (other imports)
+
+// Update food price
+const updateFoodPrice = async (req, res) => {
+    try {
+        const { id, price } = req.body;
+
+        console.log("Received update request for food ID:", id);
+        console.log("New price:", price);
+
+        if (!id) {
+            return res.status(400).json({ success: false, message: "Food ID is required" });
+        }
+
+        if (price === undefined || price === null || isNaN(price)) {
+            return res.status(400).json({ success: false, message: "Valid price is required" });
+        }
+
+        const updatedFood = await foodModel.findByIdAndUpdate(
+            id,
+            { price: Number(price) }, // Ensure price is stored as a number
+            { new: true, runValidators: true }
+        );
+
+        if (!updatedFood) {
+            return res.status(404).json({ success: false, message: "Food not found" });
+        }
+
+        console.log("Updated Food Item:", updatedFood);
+
+        res.json({ success: true, message: "Price Updated", data: updatedFood });
+    } catch (error) {
+        console.error("Error updating food price:", error);
+        res.status(500).json({ success: false, message: "Error updating food price", error: error.message });
+    }
+};
 
 
-export { listFood, addFood, removeFood, listMustTryFood };
+  
+
+export { listFood, addFood, removeFood, listMustTryFood, updateFoodPrice };

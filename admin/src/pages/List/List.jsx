@@ -3,15 +3,16 @@ import './List.css';
 import { url, currency } from '../../assets/assets';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import { FaChevronDown } from 'react-icons/fa';
+import { FaChevronDown, FaEdit, FaSave } from 'react-icons/fa';
 
 const List = () => {
-  const [list, setList] = useState([]); // List of food items
-  const [category, setCategory] = useState(""); // Selected category filter
-  const [categories, setCategories] = useState([]); // List of unique categories
-  const [dropdownOpen, setDropdownOpen] = useState(false); // Toggle dropdown
+  const [list, setList] = useState([]);
+  const [category, setCategory] = useState("");
+  const [categories, setCategories] = useState([]);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [editPriceId, setEditPriceId] = useState(null);
+  const [editedPrices, setEditedPrices] = useState({});
 
-  // Fetch food list
   const fetchList = async () => {
     try {
       console.log("Fetching food list...");
@@ -29,7 +30,6 @@ const List = () => {
     }
   };
 
-  // Fetch categories
   const fetchCategories = async () => {
     try {
       console.log("Fetching categories...");
@@ -46,7 +46,6 @@ const List = () => {
     }
   };
 
-  // Remove food item
   const removeFood = async (foodId) => {
     try {
       console.log("Removing food item with ID:", foodId);
@@ -54,7 +53,7 @@ const List = () => {
       
       if (response.data.success) {
         toast.success(response.data.message);
-        fetchList(); // Refresh list after deletion
+        fetchList();
       } else {
         toast.error("Error deleting food");
       }
@@ -64,7 +63,44 @@ const List = () => {
     }
   };
 
-  // Fetch data on component mount and when category changes
+  const handleEditPrice = (foodId, currentPrice) => {
+    setEditPriceId(foodId);
+    setEditedPrices({ ...editedPrices, [foodId]: currentPrice.toString() });
+  };
+
+  const handlePriceChange = (foodId, newPrice) => {
+    if (newPrice === "" || /^\d*$/.test(newPrice)) {
+      setEditedPrices((prevPrices) => ({
+        ...prevPrices,
+        [foodId]: newPrice,
+      }));
+    }
+  };
+
+  const handleSavePrice = async (foodId) => {
+    try {
+      console.log("Updating food price with ID:", foodId, "New Price:", editedPrices[foodId]);
+
+      const response = await axios.post(`${url}/api/food/updatePrice`, {
+        id: foodId,
+        price: editedPrices[foodId],
+      });
+
+      console.log("Backend Response:", response.data);
+
+      if (response.data.success) {
+        toast.success(response.data.message);
+        setEditPriceId(null);
+        fetchList();
+      } else {
+        toast.error("Error updating price");
+      }
+    } catch (error) {
+      console.error("Update Price Error:", error.response ? error.response.data : error.message);
+      toast.error("Server error while updating price");
+    }
+  };
+
   useEffect(() => {
     fetchList();
     fetchCategories();
@@ -75,19 +111,16 @@ const List = () => {
       <p>All Foods List</p>
 
       <div className='list-table'>
-        {/* Table Header */}
         <div className="list-table-format title">
           <b>Image</b>
           <b>Name</b>
-
-          {/* Category Header with Dropdown */}
-          <div 
-            className={`category-header ${dropdownOpen ? "open" : ""}`} 
+          <div
+            className={`category-header ${dropdownOpen ? "open" : ""}`}
             onClick={() => setDropdownOpen(!dropdownOpen)}
           >
             <b>Category</b>
             <FaChevronDown className="dropdown-arrow" />
-            
+
             {dropdownOpen && (
               <div className="dropdown-menu">
                 <p onClick={() => { setCategory(""); setDropdownOpen(false); }}>All Categories</p>
@@ -97,19 +130,33 @@ const List = () => {
               </div>
             )}
           </div>
-
           <b>Price</b>
           <b>Action</b>
         </div>
 
-        {/* Table Rows */}
         {list.length > 0 ? (
           list.map((item, index) => (
             <div key={index} className='list-table-format'>
               <img src={`${url}/images/` + item.image} alt={item.name} />
               <p>{item.name}</p>
               <p>{item.category}</p>
-              <p>{currency}{item.price}</p>
+              <p>
+                {editPriceId === item._id ? (
+                  <>
+                    <input
+                      type="text"
+                      value={editedPrices[item._id] || ""}
+                      onChange={(e) => handlePriceChange(item._id, e.target.value)}
+                    />
+                    <FaSave className="cursor" onClick={() => handleSavePrice(item._id)} />
+                  </>
+                ) : (
+                  <>
+                    {currency}{item.price}
+                    <FaEdit className="cursor" onClick={() => handleEditPrice(item._id, item.price)} />
+                  </>
+                )}
+              </p>
               <p className='cursor' onClick={() => removeFood(item._id)}>x</p>
             </div>
           ))

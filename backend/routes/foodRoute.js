@@ -1,5 +1,5 @@
 import express from 'express';
-import { addFood, listFood, removeFood, listMustTryFood } from '../controllers/foodController.js';
+import { addFood, listFood, removeFood, listMustTryFood, updateFoodPrice } from '../controllers/foodController.js';
 import multer from 'multer';
 
 const foodRouter = express.Router();
@@ -18,6 +18,9 @@ foodRouter.get("/list", listFood);
 foodRouter.post("/add", upload.single('image'), addFood);
 foodRouter.post("/remove", removeFood);
 foodRouter.get("/must-try", listMustTryFood);  // Route for Must Try items
+foodRouter.post('/updatePrice', updateFoodPrice);  // Corrected Route
+
+
 
 
 export default foodRouter;
