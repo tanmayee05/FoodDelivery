@@ -16,7 +16,9 @@ const Navbar = ({ setShowLogin, setSearchQuery }) => {
   const logout = () => {
     localStorage.removeItem("token");
     setToken("");
+    navigate("/"); // Redirect to home page after logout
   };
+  
 
   //muorders
   const goToOrders = () => {

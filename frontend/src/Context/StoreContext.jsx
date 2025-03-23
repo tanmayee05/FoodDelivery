@@ -28,17 +28,23 @@ const StoreContextProvider = ({ children }) => {
         }
     };
 
-    // ✅ Add Item to Cart
-    const addToCart = async (itemId) => {
-        setCartItems((prev) => ({ ...prev, [itemId]: (prev[itemId] || 0) + 1 }));
+    // ✅ Add to cart quantity
+
+    const addToCart = async (itemId, quantity) => {
+        setCartItems((prev) => ({
+            ...prev,
+            [itemId]: (prev[itemId] || 0) + quantity, 
+        }));
+    
         if (token) {
             try {
-                await axios.post(`${url}/api/cart/add`, { itemId }, { headers: { token } });
+                await axios.post(`${url}/api/cart/add`, { itemId, quantity }, { headers: { token } });
             } catch (error) {
                 console.error("❌ Error adding item to cart:", error);
             }
         }
     };
+    
 
     // ✅ Remove Item from Cart
     const removeFromCart = async (itemId) => {
