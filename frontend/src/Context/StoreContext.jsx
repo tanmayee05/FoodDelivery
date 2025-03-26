@@ -83,6 +83,37 @@ const StoreContextProvider = ({ children }) => {
         }
     };
 
+    // Add this function to your StoreContextProvider
+// Add this method to your context provider
+// Add this to your existing StoreContextProvider
+const updateCartItem = async (itemId, newQuantity) => {
+    // Update local state immediately for responsive UI
+    setCartItems(prev => {
+      const updated = {...prev};
+      if (newQuantity > 0) {
+        updated[itemId] = newQuantity;
+      } else {
+        delete updated[itemId];
+      }
+      return updated;
+    });
+  
+    // Update backend if authenticated
+    if (token) {
+      try {
+        await axios.post(`${url}/api/cart/update`, 
+          { itemId, quantity: newQuantity },
+          { headers: { token } }
+        );
+      } catch (error) {
+        console.error("Error updating cart:", error);
+        // Revert local state if backend update fails
+        setCartItems(prev => ({...prev})); // Trigger re-render with original values
+      }
+    }
+  };
+  
+
     // ✅ Fetch Data on Load
     useEffect(() => {
         const loadData = async () => {
@@ -109,7 +140,8 @@ const StoreContextProvider = ({ children }) => {
         loadCartData,
         setCartItems,
         currency,
-        deliveryCharge
+        deliveryCharge,
+        updateCartItem
     };
 
     return (

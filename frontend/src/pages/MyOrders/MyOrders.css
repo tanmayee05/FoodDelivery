@@ -21,12 +21,11 @@
     padding: 0 15px;
 }
 
-/* Order Card */
+/* Order Card - Ensuring Columns */
 .my-orders-order {
     display: grid;
-    grid-template-columns: 50px auto auto auto auto;
+    grid-template-columns: 50px 2fr 1fr 1fr 1fr 1fr; /* Image | Item | Price | Qty | Status | Button */
     align-items: center;
-    gap: 20px;
     font-size: 16px;
     padding: 15px;
     color: #333;
@@ -34,87 +33,144 @@
     border-radius: 10px;
     background: white;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease;
+    width: 100%;
 }
 
+/* Hover Effect */
 .my-orders-order:hover {
-    transform: scale(1.02);
+    transform: scale(1.01);
     background: #fff3f3;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 /* Product Image */
 .my-orders-order img {
-    width: 50px;
-    height: auto;
-    transition: transform 0.3s ease-in-out;
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
 }
 
-.my-orders-order img:hover {
-    transform: scale(1.1);
-}
-
-/* Order Text */
+/* Ensure All Texts Are Aligned */
 .my-orders-order p {
-    margin: 0;
+    text-align: center;
     font-size: 15px;
     color: #444;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Product Name */
+.my-orders-order p:first-of-type {
+    text-align: left;
+    font-weight: 600;
+}
+
+/* Price */
+.my-orders-order p:nth-of-type(2),
+/* Quantity */
+.my-orders-order p:nth-of-type(3) {
+    text-align: center;
 }
 
 /* Order Status */
-.my-orders-order p span {
+.my-orders-order p:last-of-type {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     color: #ff6347;
 }
 
-.my-orders-order p b {
-    font-weight: 600;
-    color: #222;
-}
-
 /* Cancel Button */
-.my-orders button {
+.my-orders-order button {
     border: none;
-    padding: 10px 14px;
+    padding: 8px 12px;
     border-radius: 6px;
     background-color: #ff5757;
     cursor: pointer;
     color: white;
     font-weight: 600;
-    transition: all 0.3s ease-in-out;
+    font-size: 14px;
+    transition: all 0.2s ease;
+    width: 100px;
 }
 
-.my-orders button:hover {
+.my-orders-order button:hover {
     background-color: #e63b3b;
-    transform: scale(1.05);
+    transform: scale(1.03);
 }
 
 /* Responsive Design */
-@media (max-width: 900px) {
+@media (max-width: 1000px) {
     .my-orders-order {
-        grid-template-columns: 50px auto auto;
+        grid-template-columns: 40px 2fr 1fr 1fr 1fr 1fr; /* Adjust column sizes */
         font-size: 14px;
         padding: 12px;
     }
-    .my-orders-order button {
+    
+    .my-orders-order p {
         font-size: 14px;
-        padding: 8px 12px;
-    }
-    .my-orders h2 {
-        font-size: 22px;
     }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 768px) {
+    .my-orders-order {
+        grid-template-columns: 50px 2fr 1fr; /* Stack some items */
+        gap: 10px;
+        padding: 12px;
+    }
+    
+    .my-orders-order img {
+        order: 1;
+    }
+    
+    .my-orders-order p:first-of-type {
+        order: 2;
+        text-align: left;
+        flex: 1 1 100%;
+    }
+    
+    .my-orders-order p:nth-of-type(2),
+    .my-orders-order p:nth-of-type(3) {
+        order: 3;
+        text-align: center;
+    }
+    
+    .my-orders-order p:last-of-type {
+        order: 4;
+        width: 100%;
+        text-align: center;
+    }
+    
+    .my-orders-order button {
+        order: 5;
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .my-orders {
+        padding: 20px 10px;
+    }
+    
+    .my-orders h2 {
+        font-size: 22px;
+    }
+    
     .my-orders-order {
         grid-template-columns: 1fr;
+        gap: 8px;
+        padding: 12px;
+    }
+    
+    .my-orders-order p,
+    .my-orders-order button {
+        font-size: 13px;
         text-align: center;
-        gap: 10px;
-        padding: 15px;
     }
-    .my-orders-order img {
-        margin: 0 auto;
-    }
-    .my-orders h2 {
-        font-size: 20px;
+    
+    .my-orders-order button {
+        width: 100%;
     }
 }

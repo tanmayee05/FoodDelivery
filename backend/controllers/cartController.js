@@ -48,5 +48,28 @@ const getCart = async (req, res) => {
    }
 }
 
+// Add to cartController.js
+// Add to cartController.js
+// Add this to your existing cartController.js
+const updateCart = async (req, res) => {
+   try {
+     let userData = await userModel.findById(req.body.userId);
+     let cartData = userData.cartData;
+     
+     if (req.body.quantity > 0) {
+       cartData[req.body.itemId] = req.body.quantity;
+     } else {
+       delete cartData[req.body.itemId];
+     }
+     
+     await userModel.findByIdAndUpdate(req.body.userId, { cartData });
+     res.json({ success: true, message: "Cart Updated", cartData });
+   } catch (error) {
+     console.log(error);
+     res.json({ success: false, message: "Error" });
+   }
+ }
+ 
 
-export { addToCart, removeFromCart, getCart }
+
+export { addToCart, removeFromCart, getCart,updateCart }

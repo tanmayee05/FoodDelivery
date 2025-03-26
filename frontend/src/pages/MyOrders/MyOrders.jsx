@@ -16,22 +16,22 @@ const MyOrders = () => {
   };
 
   const handleCancelOrder = async (orderId) => {
-    try {
-      const response = await axios.post(url + "/api/order/cancel", { orderId }, { headers: { token } });
-      if (response.data.success) {
-        toast.success(response.data.message);
-        setData(prevData => prevData.map(order => 
-          order._id === orderId ? { ...order, status: "User Canceled" } : order
-        )); // Update status in state to remove button
-      } else {
-        toast.error(response.data.message);
-      }
-    } catch (error) {
-      console.error("Error canceling order:", error);
-      toast.error("Failed to cancel order.");
+  try {
+    const response = await axios.post(url + "/api/order/cancel", { orderId }, { headers: { token } });
+    if (response.data.success) {
+      toast.success(response.data.message);
+      setData(prevData => prevData.map(order => 
+        order._id === orderId ? { ...order, status: "User Canceled" } : order
+      )); // Update status in state to remove button
+    } else {
+      toast.error(response.data.message);
     }
-  };
-  
+  } catch (error) {
+    console.error("Error canceling order:", error);
+    toast.error("Failed to cancel order.");
+  }
+};
+
 
   useEffect(() => {
     if (token) {
