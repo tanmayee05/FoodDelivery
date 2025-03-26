@@ -130,4 +130,33 @@ const verifyOrder = async (req, res) => {
 
 }
 
-export { placeOrder, listOrders, userOrders, updateStatus, verifyOrder, placeOrderCod }
+const cancelOrder = async (req, res) => {
+    try {
+        const order = await orderModel.findById(req.body.orderId);
+        if (!order) {
+            return res.json({ success: false, message: "Order not found" });
+        }
+
+        if (order.status === "User Canceled") {
+            return res.json({ success: false, message: "Order is already canceled by the user" });
+        }
+
+        if (order.status === "Out for delivery") {
+            return res.json({ success: false, message: "Cannot cancel an order that is Out for Delivery" });
+        }
+
+        order.status = "User Canceled";
+        await order.save();
+
+        res.json({ success: true, message: "Order Canceled by User" });
+    } catch (error) {
+        res.json({ success: false, message: "Error canceling order" });
+    }
+};
+
+
+
+
+
+
+export { placeOrder, listOrders, userOrders, updateStatus, verifyOrder, placeOrderCod,cancelOrder  }

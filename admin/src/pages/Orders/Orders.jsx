@@ -61,11 +61,13 @@ const Order = () => {
             </div>
             <p>Items : {order.items.length}</p>
             <p>{currency}{order.amount}</p>
-            <select onChange={(e) => statusHandler(e, order._id)} value={order.status} name="" id="">
-              <option value="Food Processing">Food Processing</option>
-              <option value="Out for delivery">Out for delivery</option>
-              <option value="Delivered">Delivered</option>
-            </select>
+            <select onChange={(e) => statusHandler(e, order._id)} value={order.status} disabled={order.status === "User Canceled"}>
+  <option value="Food Processing">Food Processing</option>
+  <option value="Out for delivery">Out for delivery</option>
+  <option value="Delivered">Delivered</option>
+</select>
+{order.status === "User Canceled" && <p className="canceled-text">User has canceled the order</p>}
+
           </div>
         ))}
       </div>
