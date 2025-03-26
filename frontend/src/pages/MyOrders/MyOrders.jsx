@@ -11,9 +11,19 @@ const MyOrders = () => {
   const { url, token, currency } = useContext(StoreContext);
 
   const fetchOrders = async () => {
-    const response = await axios.post(url + "/api/order/userorders", {}, { headers: { token } });
-    setData(response.data.data);
+    try {
+      const response = await axios.post(url + "/api/order/userorders", {}, { headers: { token } });
+      if (response.data.success) {
+        setData(response.data.data.reverse()); // Reverse orders to show recent ones first
+      } else {
+        toast.error("Failed to fetch orders.");
+      }
+    } catch (error) {
+      console.error("Error fetching orders:", error);
+      toast.error("Error fetching orders.");
+    }
   };
+  
 
   const handleCancelOrder = async (orderId) => {
   try {

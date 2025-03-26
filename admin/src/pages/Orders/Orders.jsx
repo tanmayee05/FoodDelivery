@@ -1,56 +1,60 @@
-import React, { useEffect, useState } from 'react'
-import './Orders.css'
+import React, { useEffect, useState } from 'react';
+import './Orders.css';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 import { assets, url, currency } from '../../assets/assets';
 
 const Order = () => {
-
   const [orders, setOrders] = useState([]);
 
   const fetchAllOrders = async () => {
-    const response = await axios.get(`${url}/api/order/list`)
-    if (response.data.success) {
-      setOrders(response.data.data.reverse());
+    try {
+      const response = await axios.get(`${url}/api/order/list`);
+      if (response.data.success) {
+        setOrders(response.data.data.reverse());
+      } else {
+        toast.error("Error fetching orders.");
+      }
+    } catch (error) {
+      console.error("Error fetching orders:", error);
+      toast.error("Error fetching orders.");
     }
-    else {
-      toast.error("Error")
-    }
-  }
+  };
 
   const statusHandler = async (event, orderId) => {
-    console.log(event, orderId);
-    const response = await axios.post(`${url}/api/order/status`, {
-      orderId,
-      status: event.target.value
-    })
-    if (response.data.success) {
-      await fetchAllOrders();
+    try {
+      const response = await axios.post(`${url}/api/order/status`, {
+        orderId,
+        status: event.target.value
+      });
+      if (response.data.success) {
+        toast.success("Order status updated.");
+        fetchAllOrders();
+      } else {
+        toast.error("Failed to update status.");
+      }
+    } catch (error) {
+      console.error("Error updating status:", error);
+      toast.error("Error updating status.");
     }
-  }
-
+  };
 
   useEffect(() => {
     fetchAllOrders();
-  }, [])
+  }, []);
 
   return (
     <div className='order add'>
       <h3>Order Page</h3>
       <div className="order-list">
-        {orders.map((order, index) => (
-          <div key={index} className='order-item'>
+        {orders.map((order) => (
+          <div key={order._id} className='order-item'>
             <img src={assets.parcel_icon} alt="" />
             <div>
               <p className='order-item-food'>
-                {order.items.map((item, index) => {
-                  if (index === order.items.length - 1) {
-                    return item.name + " x " + item.quantity
-                  }
-                  else {
-                    return item.name + " x " + item.quantity + ", "
-                  }
-                })}
+                {order.items.map((item, index) => 
+                  `${item.name} x ${item.quantity}${index === order.items.length - 1 ? '' : ', '}`
+                )}
               </p>
               <p className='order-item-name'>{order.address.firstName + " " + order.address.lastName}</p>
               <div className='order-item-address'>
@@ -59,18 +63,23 @@ const Order = () => {
               </div>
               <p className='order-item-phone'>{order.address.phone}</p>
             </div>
-            <p>Items : {order.items.length}</p>
+            <p>Items: {order.items.length}</p>
             <p>{currency}{order.amount}</p>
-            <select onChange={(e) => statusHandler(e, order._id)} value={order.status} name="" id="">
-              <option value="Food Processing">Food Processing</option>
-              <option value="Out for delivery">Out for delivery</option>
-              <option value="Delivered">Delivered</option>
-            </select>
+
+            {order.status === "User Canceled" ? (
+              <p className="canceled-text">User has canceled the order</p>
+            ) : (
+              <select onChange={(e) => statusHandler(e, order._id)} value={order.status}>
+                <option value="Food Processing">Food Processing</option>
+                <option value="Out for delivery">Out for delivery</option>
+                <option value="Delivered">Delivered</option>
+              </select>
+            )}
           </div>
         ))}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Order
+export default Order;
