@@ -8,27 +8,62 @@ const StoreContextProvider = ({ children }) => {
     const url = "http://localhost:4000";
 
     const [food_list, setFoodList] = useState([]);
-    const [mustTryItems, setMustTryItems] = useState([]); // ✅ Stores "Must Try" Items
+    const [filteredFoodList, setFilteredFoodList] = useState([]);
+    const [mustTryItems, setMustTryItems] = useState([]);
     const [cartItems, setCartItems] = useState({});
     const [token, setToken] = useState(localStorage.getItem("token") || "");
+    const [searchQuery, setSearchQuery] = useState(""); // Track search query state
     const currency = "₹";
     const deliveryCharge = 50;
 
-    // ✅ Fetch Food List and Must Try Items
+    // Fetch Food List and Must Try Items
     const fetchFoodList = async () => {
         try {
             const response = await axios.get(`${url}/api/food/list`);
             const foodData = response.data?.data || [];
             setFoodList(foodData);
-
-            // ✅ Find all "Must Try" items
+            setFilteredFoodList(foodData);
             setMustTryItems(foodData.filter((item) => item.mustTry === true));
         } catch (error) {
             console.error("❌ Error fetching food list:", error);
         }
     };
 
-    // ✅ Add to cart quantity
+    // Search food items
+    const searchFood = (query) => {
+        setSearchQuery(query); // Store the search query
+        if (!query) {
+            setFilteredFoodList(food_list);
+            return;
+        }
+        const lowerCaseQuery = query.toLowerCase();
+        const filtered = food_list.filter(item => 
+            item.name.toLowerCase().includes(lowerCaseQuery) ||
+            item.description.toLowerCase().includes(lowerCaseQuery) ||
+            item.category.toLowerCase().includes(lowerCaseQuery)
+        );
+        setFilteredFoodList(filtered);
+    };
+
+    // Clear search and reset filtered list
+    const clearSearch = () => {
+        setSearchQuery("");
+        setFilteredFoodList(food_list);
+    };
+
+    // Get items filtered by category (ignoring search when needed)
+    const getItemsByCategory = (category) => {
+        if (searchQuery) {
+            // If there's an active search, filter the already filtered list
+            return filteredFoodList.filter(item => 
+                category === "All" || item.category === category
+            );
+        }
+        // Otherwise, filter the full list
+        return food_list.filter(item => 
+            category === "All" || item.category === category
+        );
+    };
 
     const addToCart = async (itemId, quantity) => {
         setCartItems((prev) => ({
@@ -44,13 +79,11 @@ const StoreContextProvider = ({ children }) => {
             }
         }
     };
-    
 
-    // ✅ Remove Item from Cart
     const removeFromCart = async (itemId) => {
         setCartItems((prev) => {
             const updatedCart = { ...prev, [itemId]: Math.max((prev[itemId] || 0) - 1, 0) };
-            if (updatedCart[itemId] === 0) delete updatedCart[itemId]; // Remove item if count is 0
+            if (updatedCart[itemId] === 0) delete updatedCart[itemId];
             return updatedCart;
         });
 
@@ -63,16 +96,12 @@ const StoreContextProvider = ({ children }) => {
         }
     };
 
-    // ✅ Calculate Total Cart Amount
     const getTotalCartAmount = () => {
         return food_list.reduce((total, item) => {
             return total + ((cartItems[item._id] || 0) * item.price);
         }, 0);
     };
 
-    
-
-    // ✅ Load Cart Data from API
     const loadCartData = async () => {
         if (!token) return;
         try {
@@ -83,38 +112,30 @@ const StoreContextProvider = ({ children }) => {
         }
     };
 
-    // Add this function to your StoreContextProvider
-// Add this method to your context provider
-// Add this to your existing StoreContextProvider
-const updateCartItem = async (itemId, newQuantity) => {
-    // Update local state immediately for responsive UI
-    setCartItems(prev => {
-      const updated = {...prev};
-      if (newQuantity > 0) {
-        updated[itemId] = newQuantity;
-      } else {
-        delete updated[itemId];
-      }
-      return updated;
-    });
-  
-    // Update backend if authenticated
-    if (token) {
-      try {
-        await axios.post(`${url}/api/cart/update`, 
-          { itemId, quantity: newQuantity },
-          { headers: { token } }
-        );
-      } catch (error) {
-        console.error("Error updating cart:", error);
-        // Revert local state if backend update fails
-        setCartItems(prev => ({...prev})); // Trigger re-render with original values
-      }
-    }
-  };
-  
+    const updateCartItem = async (itemId, newQuantity) => {
+        setCartItems(prev => {
+            const updated = {...prev};
+            if (newQuantity > 0) {
+                updated[itemId] = newQuantity;
+            } else {
+                delete updated[itemId];
+            }
+            return updated;
+        });
+    
+        if (token) {
+            try {
+                await axios.post(`${url}/api/cart/update`, 
+                    { itemId, quantity: newQuantity },
+                    { headers: { token } }
+                );
+            } catch (error) {
+                console.error("Error updating cart:", error);
+                setCartItems(prev => ({...prev}));
+            }
+        }
+    };
 
-    // ✅ Fetch Data on Load
     useEffect(() => {
         const loadData = async () => {
             await fetchFoodList();
@@ -125,10 +146,10 @@ const updateCartItem = async (itemId, newQuantity) => {
         loadData();
     }, [token]);
 
-    // ✅ Context Value
     const contextValue = {
         url,
         food_list,
+        filteredFoodList,
         mustTryItems,
         menu_list,
         cartItems,
@@ -141,7 +162,11 @@ const updateCartItem = async (itemId, newQuantity) => {
         setCartItems,
         currency,
         deliveryCharge,
-        updateCartItem
+        updateCartItem,
+        searchFood,
+        clearSearch,
+        getItemsByCategory, // Add this new function
+        searchQuery // Expose search query state
     };
 
     return (

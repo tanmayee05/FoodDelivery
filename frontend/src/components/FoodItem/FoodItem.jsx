@@ -5,99 +5,150 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const FoodItem = ({ image, name, price, description = "", id, mustTry }) => {
-  const { cartItems, addToCart, url, currency } = useContext(StoreContext);
-  const [quantity, setQuantity] = useState("");
-  const [expandedItems, setExpandedItems] = useState({});
+  const { addToCart, url, currency } = useContext(StoreContext);
+  const [quantity, setQuantity] = useState(1);
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [isAddingToCart, setIsAddingToCart] = useState(false);
 
-  const maxLength = 10;
-
-  const toggleReadMore = (itemId) => {
-    setExpandedItems((prev) => ({
-      ...prev,
-      [itemId]: !prev[itemId],
-    }));
-    console.log("Expanded Items:", expandedItems); // Debugging
-  };
+  const MAX_DESCRIPTION_LENGTH = 100;
+  const shouldTruncate = description.length > MAX_DESCRIPTION_LENGTH;
 
   const handleQuantityChange = (e) => {
-    const newValue = e.target.value;
-    if (!isNaN(newValue) && Number(newValue) > 0) {
-      setQuantity(newValue);
+    const value = e.target.value;
+    if (value === "" || (!isNaN(value) && Number(value) > 0)) {
+      setQuantity(value === "" ? "" : parseInt(value));
     }
   };
 
-  const handleBlur = () => {
-    if (Number(quantity) < 1) {
+  const handleQuantityBlur = () => {
+    if (quantity === "" || quantity < 1) {
       setQuantity(1);
     }
   };
 
-  const handleArrowClick = (direction) => {
-    setQuantity((prev) => {
-      let newQuantity = Number(prev) || 1;
-      if (direction === "up") newQuantity += 1;
-      if (direction === "down") newQuantity = Math.max(1, newQuantity - 1);
-      return newQuantity;
+  const incrementQuantity = () => {
+    setQuantity(prev => (prev === "" ? 2 : prev + 1));
+  };
+
+  const decrementQuantity = () => {
+    setQuantity(prev => {
+      const newValue = prev === "" ? 0 : prev - 1;
+      return newValue < 1 ? 1 : newValue;
     });
   };
 
-  const handleAddToCart = () => {
-    if (quantity === "") {
-      toast.error("⚠️ Enter the quantity of food!", { position: "top-center", autoClose: 3000 });
+  const handleAddToCart = async () => {
+    if (quantity < 1) {
+      toast.error("⚠️ Quantity must be at least 1!", {
+        position: "top-center",
+        autoClose: 3000,
+      });
       return;
     }
 
-    addToCart(id, Number(quantity), "kgs");
-
-    toast.success(`🛒 ${name} is added to cart!`, { position: "top-center", autoClose: 3000 });
+    setIsAddingToCart(true);
+    try {
+      await addToCart(id, Number(quantity));
+      toast.success(`🛒 ${name} added to cart!`, {
+        position: "top-center",
+        autoClose: 3000,
+      });
+    } catch (error) {
+      toast.error("❌ Failed to add item to cart", {
+        position: "top-center",
+        autoClose: 3000,
+      });
+    } finally {
+      setIsAddingToCart(false);
+    }
   };
 
-  console.log("FoodItem ID:", id); // Debugging
-  console.log("FoodItem Description:", description); // Debugging
+  const toggleDescription = () => {
+    setIsExpanded(!isExpanded);
+  };
+
+  const displayedDescription = isExpanded 
+    ? description 
+    : shouldTruncate 
+      ? `${description.substring(0, MAX_DESCRIPTION_LENGTH)}...` 
+      : description;
 
   return (
     <div className={`food-item ${mustTry ? "must-try" : ""}`}>
       <div className="food-item-img-container">
-        <img className="food-item-image" src={`${url}/images/${image}`} alt={name} />
+        <img 
+          className="food-item-image" 
+          src={`${url}/images/${image}`} 
+          alt={name} 
+          loading="lazy"
+        />
 
-        {mustTry && <span className="must-try-badge">🔥 Must Try</span>}
+        {mustTry && (
+          <span className="must-try-badge" aria-label="Must try item">
+            🔥 Must Try
+          </span>
+        )}
 
-        <div className="quantity-unit-container">
+        <div className="quantity-control-container">
           <div className="quantity-control">
-            <button className="quantity-arrow down-arrow" onClick={() => handleArrowClick("down")}>▼</button>
+            <button
+              className="quantity-arrow"
+              onClick={decrementQuantity}
+              aria-label="Decrease quantity"
+              disabled={quantity <= 1}
+            >
+              -
+            </button>
             <input
               type="number"
               value={quantity}
               onChange={handleQuantityChange}
-              onBlur={handleBlur}
-              placeholder="1"
+              onBlur={handleQuantityBlur}
+              min="1"
               className="quantity-input"
+              aria-label="Quantity"
             />
-            <button className="quantity-arrow up-arrow" onClick={() => handleArrowClick("up")}>▲</button>
+            <button
+              className="quantity-arrow"
+              onClick={incrementQuantity}
+              aria-label="Increase quantity"
+            >
+              +
+            </button>
           </div>
+          <button
+            className={`add-to-cart-btn ${isAddingToCart ? "adding" : ""}`}
+            onClick={handleAddToCart}
+            disabled={isAddingToCart}
+            aria-label={`Add ${name} to cart`}
+          >
+            {isAddingToCart ? "Adding..." : "Add to Cart"}
+          </button>
         </div>
-
-        <button className="add-to-cart-btn" onClick={handleAddToCart}>
-          Add to Cart
-        </button>
       </div>
 
       <div className="food-item-info">
         <h3 className="food-item-name">{name}</h3>
 
         <p className="food-item-desc">
-          <span className={`desc-text ${expandedItems[id] ? "expanded" : ""}`}>
-            {expandedItems[id] ? description : description.slice(0, maxLength)}
-          </span>
-          {description.length > maxLength && (
-            <span className="read-more" onClick={() => toggleReadMore(id)}>
-              {expandedItems[id] ? " Read Less" : " Read More"}
-            </span>
+          {displayedDescription}
+          {shouldTruncate && (
+            <button
+              className="read-more-btn"
+              onClick={toggleDescription}
+              aria-label={isExpanded ? "Show less description" : "Show more description"}
+            >
+              {isExpanded ? " Read Less" : " Read More"}
+            </button>
           )}
         </p>
 
-        <p className="food-item-price">{currency} {price}</p>
-        <p>Price per Kg</p>
+        <div className="price-container">
+          <p className="food-item-price">
+            {currency} {price.toFixed(2)}
+          </p>
+          <p className="price-unit">per kg</p>
+        </div>
       </div>
     </div>
   );

@@ -70,8 +70,8 @@ const forgotPassword = async (req, res) => {
         const user = await userModel.findOne({ email: req.body.email });
 
         if (!user) {
-            return res.status(404).json({ message: "User not found" });
-        }
+            return res.status(404).json({ success: false, message: "User not found" });
+        }        
 
         const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: "10m" });
 
@@ -80,9 +80,19 @@ const forgotPassword = async (req, res) => {
         await user.save();
 
         const transporter = nodemailer.createTransport({
-            service: "gmail",
-            auth: { user: process.env.EMAIL, pass: process.env.PASSWORD_APP_EMAIL }
+            host: "smtp.gmail.com",
+            port: 587,  // ✅ Use 587 instead of 465
+            secure: false, // ✅ Must be false for TLS
+            auth: {
+                user: process.env.EMAIL, 
+                pass: process.env.EMAIL_PASSWORD 
+            },
+            tls: {
+                rejectUnauthorized: false
+            }
         });
+        
+        
 
         const mailOptions = {
             from: process.env.EMAIL,
@@ -93,14 +103,34 @@ const forgotPassword = async (req, res) => {
                    <p>This link will expire in 10 minutes.</p>`
         };
 
+        transporter.verify((error, success) => {
+            if (error) {
+                console.error("SMTP Connection Error:", error);
+                return res.status(500).json({ success: false, message: "SMTP connection failed" });
+            } else {
+                console.log("SMTP Connected Successfully");
+            }
+        });
+        
+
         transporter.sendMail(mailOptions, (err, info) => {
             if (err) {
-                return res.status(500).json({ message: err.message });
+                console.error("Email Sending Error:", err);
+                if (!res.headersSent) {
+                    return res.status(500).json({ success: false, message: "Failed to send email" });
+                }
+            } else {
+                console.log("Email Sent:", info.response);
+                if (!res.headersSent) {
+                    return res.json({ success: true, message: "Email sent" });
+                }
             }
-            res.json({ message: "Email sent" });
         });
+        
+        
+        
     } catch (err) {
-        res.status(500).json({ message: err.message });
+        res.status(500).json({ success: false, message: "Server error" });
     }
 };
 

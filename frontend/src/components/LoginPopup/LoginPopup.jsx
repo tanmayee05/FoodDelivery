@@ -35,40 +35,42 @@ const LoginPopup = ({ setShowLogin }) => {
 
     const onLogin = async (e) => {
         e.preventDefault();
-
-        let new_url = url;
-        if (currState === "Login") {
-            new_url += "/api/user/login";
-        } else {
-            new_url += "/api/user/register";
-        }
-
-        const response = await axios.post(new_url, data);
-        if (response.data.success) {
-            setToken(response.data.token);
-            localStorage.setItem("token", response.data.token);
-            loadCartData({ token: response.data.token });
-            setShowLogin(false);
-        } else {
-            toast.error(response.data.message);
+        try {
+            let new_url = url + (currState === "Login" ? "/api/user/login" : "/api/user/register");
+            const response = await axios.post(new_url, data);
+            
+            if (response.data.success) {
+                setToken(response.data.token);
+                localStorage.setItem("token", response.data.token);
+                loadCartData({ token: response.data.token });
+                setShowLogin(false);
+            } else {
+                toast.error(response.data.message);
+            }
+        } catch (error) {
+            toast.error(error.response?.data?.message || "An unexpected error occurred.");
         }
     };
-
+    
     const onForgotPassword = async (e) => {
         e.preventDefault();
-
-        // Send a request to the backend to initiate password reset
-        const response = await axios.post(`${url}/api/user/forgot-password`, {
-            email: resetPasswordData.email
-        });
-
-        if (response.data.success) {
-            toast.success("Password reset link sent to your email.");
-            setIsForgotPassword(false); // Reset the state
-        } else {
-            toast.error(response.data.message);
+    
+        try {
+            const response = await axios.post(`${url}/api/user/forgot-password`, {
+                email: resetPasswordData.email
+            });
+    
+            if (response.data.success) {
+                toast.success("Password reset link sent to your email.");
+                setIsForgotPassword(false); // Reset the state
+            } else {
+                toast.error(response.data.message || "User not found.");
+            }
+        } catch (error) {
+            toast.error(error.response?.data?.message || "User not found.");
         }
     };
+    
 
     const onResetPassword = async (e) => {
         e.preventDefault();
@@ -164,12 +166,7 @@ const LoginPopup = ({ setShowLogin }) => {
                     </div>
                 )}
 
-                {!isForgotPassword && (
-                    <div className="login-popup-condition">
-                        <input type="checkbox" required />
-                        <p>By continuing, I agree to the terms of use & privacy policy.</p>
-                    </div>
-                )}
+                
 
                 <button type="submit">
                     {isForgotPassword
