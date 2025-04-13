@@ -1,0 +1,231 @@
+.login-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    width: 100%;
+    height: 100%;
+    background-color: #00000090;
+    display: grid;
+}
+
+.login-popup-container {
+    place-self: center;
+    width: max(40vw, 500px); /* Increased width */
+    height: max(60vh, 600px); /* Increased height */
+    color: #FF4C24;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    padding: 70px 30px;
+    border-radius: 8px;
+    font-size: 14px;
+    animation: fadeIn 0.5s;
+    position: relative;
+    overflow: hidden;
+
+    /* Adjusted Background */
+    background: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQsLHdEpKov2cMqysrmTkFtK3wmoFnZZM3f0Q&s') no-repeat center bottom;
+    background-size: cover; /* Ensures the image fits properly */
+}
+
+
+
+/* Background image based on state */
+.login-popup-container[data-state="Login"]::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-size: cover;
+    background-position: center;
+    opacity: 0.2;
+    z-index: -1;
+}
+
+.login-popup-container[data-state="Sign Up"]::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-size: cover;
+    background-position: center;
+    opacity: 0.2;
+    z-index: -1;
+}
+
+/* Forgot password states */
+.login-popup-container[data-state="Forgot Password"]::before,
+.login-popup-container[data-state="Verify OTP"]::before,
+.login-popup-container[data-state="Reset Password"]::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-size: cover;
+    background-position: center;
+    opacity: 0.2;
+    z-index: -1;
+}
+
+.login-popup-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: black;
+}
+
+.login-popup-title img {
+    width: 25px;
+    cursor: pointer;
+}
+
+.login-popup-inputs {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.login-popup-inputs input {
+    outline: none;
+    border: 1px solid #FF4C24;
+    padding: 10px;
+    border-radius: 4px;
+    background-color: rgba(255, 255, 255, 0.8);
+}
+
+.login-popup-container button {
+    border: none;
+    padding: 10px;
+    border-radius: 4px;
+    color: white;
+    background-color: #FF4C24;
+    font-size: 15px;
+    cursor: pointer;
+    position: relative;
+    z-index: 1;
+}
+
+.login-popup p span {
+    color: #FF4C24;
+    font-weight: 500;
+    cursor: pointer;
+    position: relative;
+    z-index: 1;
+}
+
+.reset-method-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+    position: relative;
+    z-index: 1;
+}
+
+.reset-method-container h3 {
+    color: #FF4C24;
+    margin-bottom: 10px;
+}
+
+.reset-method-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+    max-width: 300px;
+}
+
+.reset-method-btn {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    background-color: #4CAF50;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.reset-method-btn:hover {
+    background-color: #45a049;
+}
+
+.back-btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    background-color: #f44336;
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 10px;
+}
+
+.back-btn:hover {
+    background-color: #da190b;
+}
+
+.otp-input-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    padding: 20px;
+    position: relative;
+    z-index: 1;
+}
+
+.otp-input-container h3 {
+    color: #FF4C24;
+    margin-bottom: 10px;
+}
+
+.otp-input-container p {
+    color: #FF4C24;
+    font-size: 14px;
+    margin-bottom: 15px;
+}
+
+.phone-input-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 4px;
+}
+
+.phone-input-container input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #FF4C24;
+    border-radius: 4px;
+    font-size: 16px;
+    background-color: rgba(255, 255, 255, 0.8);
+}
+
+.phone-format-hint {
+    color: #FF4C24;
+    font-size: 12px;
+    margin-top: 2px;
+}
+
+/* Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

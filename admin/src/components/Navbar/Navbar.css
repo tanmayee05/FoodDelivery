@@ -1,0 +1,52 @@
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 5%;
+    background-color: #fff; /* Adjust to match theme */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+.navbar .logo {
+    width: max(12%, 100px);
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out;
+}
+
+.navbar .logo:hover {
+    transform: scale(1.1);
+}
+
+.navbar .profile {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    object-fit: cover;
+    cursor: pointer;
+    transition: box-shadow 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+.navbar .profile:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .navbar {
+        padding: 10px 3%;
+    }
+
+    .navbar .logo {
+        width: max(15%, 80px);
+    }
+
+    .navbar .profile {
+        width: 40px;
+        height: 40px;
+    }
+}

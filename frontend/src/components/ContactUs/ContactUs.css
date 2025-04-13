@@ -1,0 +1,51 @@
+.contact-container {
+    text-align: center;
+    padding: 40px 20px;
+    background-color: #150e09;
+    color: white;
+    font-family: Arial, sans-serif;
+    margin-bottom: 50px;
+}
+
+h1, h2 {
+    font-size: 28px;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+}
+
+p {
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.contact-image {
+    width: 90%;
+    max-width: 700px;
+    height: auto;
+    margin: 30px auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(255, 255, 255, 0.1);
+}
+
+/* Contact Methods Section */
+.contact-methods {
+    display: flex;
+    justify-content: center;
+    gap: 50px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+}
+
+.contact-item {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 15px;
+    border-radius: 8px;
+    width: 250px;
+    text-align: center;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.contact-item:hover {
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(255, 255, 255, 0.3);
+}

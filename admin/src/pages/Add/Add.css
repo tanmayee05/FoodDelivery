@@ -1,0 +1,192 @@
+/* Page Container */
+.add {
+    width: 70%;
+    margin-left: max(5vw, 25px);
+    margin-top: 50px;
+    color: #4a4a4a; /* Darker text for better readability */
+    font-size: 16px;
+    font-family: 'Arial', sans-serif; /* Modern font */
+}
+
+/* Form Styling */
+.add form {
+    display: flex;
+    flex-direction: column;
+    gap: 25px; /* Increased gap for better spacing */
+    background: rgba(255, 255, 255, 0.9); /* Semi-transparent white background */
+    backdrop-filter: blur(10px); /* Glassmorphism effect */
+    padding: 30px;
+    border-radius: 15px; /* Rounded corners */
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    border: 1px solid rgba(255, 255, 255, 0.2); /* Light border for glass effect */
+}
+
+/* Image Upload Section */
+.add-img-upload {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px; /* Increased gap for better spacing */
+    margin-bottom: 20px; /* Added margin for separation */
+}
+
+.add-img-upload img {
+    width: 150px; /* Slightly larger image */
+    height: 150px;
+    border-radius: 15px; /* Rounded corners for the image */
+    object-fit: cover; /* Ensure the image fits properly */
+    border: 2px dashed #c0c0c0; /* Dashed border for the upload area */
+    padding: 10px; /* Padding inside the image container */
+    transition: border-color 0.3s ease, transform 0.3s ease; /* Smooth transitions */
+}
+
+.add-img-upload img:hover {
+    border-color: #2c3e50; /* Darker border on hover */
+    transform: scale(1.05); /* Slight zoom on hover */
+}
+
+.add-img-upload p {
+    font-size: 14px;
+    color: #6d6d6d; /* Grey text for the upload label */
+}
+
+/* Input and Textarea Styling */
+.add-product-name,
+.add-product-description {
+    width: max(40%, 280px);
+}
+
+.add-product-name input,
+.add-product-description textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #e0e0e0; /* Light grey border */
+    border-radius: 10px; /* Rounded corners */
+    font-size: 14px;
+    color: #333333; /* Dark text for better readability */
+    background: rgba(255, 255, 255, 0.8); /* Semi-transparent background */
+    backdrop-filter: blur(5px); /* Glassmorphism effect */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transitions */
+}
+
+.add-product-name input:focus,
+.add-product-description textarea:focus {
+    border-color: #2c3e50; /* Darker border on focus */
+    box-shadow: 0 0 10px rgba(44, 62, 80, 0.2); /* Subtle shadow on focus */
+    background: rgba(255, 255, 255, 1); /* Solid background on focus */
+}
+
+.add-product-description textarea {
+    resize: vertical; /* Allow vertical resizing */
+    min-height: 120px; /* Minimum height for the textarea */
+}
+
+/* Category and Price Section */
+.add-category-price {
+    display: flex;
+    gap: 30px;
+    align-items: center;
+}
+
+.add-category,
+.add-price {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.add-category select,
+.add-price input {
+    width: 100%;
+    max-width: 150px; /* Slightly wider inputs */
+    padding: 12px;
+    border: 1px solid #e0e0e0; /* Light grey border */
+    border-radius: 10px; /* Rounded corners */
+    font-size: 14px;
+    color: #333333; /* Dark text for better readability */
+    background: rgba(255, 255, 255, 0.8); /* Semi-transparent background */
+    backdrop-filter: blur(5px); /* Glassmorphism effect */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transitions */
+}
+
+.add-category select:focus,
+.add-price input:focus {
+    border-color: #2c3e50; /* Darker border on focus */
+    box-shadow: 0 0 10px rgba(44, 62, 80, 0.2); /* Subtle shadow on focus */
+    background: rgba(255, 255, 255, 1); /* Solid background on focus */
+}
+
+/* Must Try Checkbox */
+.add-must-try {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px; /* Added margin for separation */
+}
+
+.add-must-try label {
+    font-size: 14px;
+    color: #4a4a4a; /* Dark text for better readability */
+}
+
+.add-must-try input {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+
+/* Add Button */
+.add-btn {
+    max-width: 150px; /* Slightly wider button */
+    padding: 12px 20px;
+    border: none;
+    border-radius: 10px; /* Rounded corners */
+    background: linear-gradient(135deg, #2c3e50, #1a2533); /* Gradient background */
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.3s ease; /* Smooth transitions */
+}
+
+.add-btn:hover {
+    background: linear-gradient(135deg, #1a2533, #2c3e50); /* Reverse gradient on hover */
+    transform: translateY(-2px); /* Slight lift on hover */
+}
+
+.add-btn:active {
+    transform: translateY(0); /* Reset lift on click */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .add {
+        width: 90%; /* Wider container for smaller screens */
+        margin-left: 5%;
+    }
+
+    .add form {
+        padding: 20px; /* Reduced padding for smaller screens */
+    }
+
+    .add-category-price {
+        flex-direction: column; /* Stack category and price vertically */
+        gap: 20px;
+    }
+
+    .add-category select,
+    .add-price input {
+        max-width: 100%; /* Full width for smaller screens */
+    }
+}
+/* Hide the number input spinner */
+.add-price input[type="number"]::-webkit-outer-spin-button,
+.add-price input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none; /* Hide arrows in WebKit browsers (Chrome, Safari) */
+    margin: 0; /* Remove default margin */
+}
+
+.add-price input[type="number"] {
+    -moz-appearance: textfield; /* Hide arrows in Firefox */
+    appearance: textfield; /* Hide arrows in modern browsers */
+}

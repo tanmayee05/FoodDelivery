@@ -1,0 +1,240 @@
+:root {
+    --primary-color: #ff6600;
+    --background-color: #ffffff;
+    --hover-color: #ffe0cc;
+    --text-color: #333;
+}
+
+/* Navbar Container */
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    padding: 1rem 2rem;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+/* Logo */
+.logo {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+/* Desktop Menu */
+.navbar-menu {
+    display: flex;
+    list-style: none;
+    gap: 2rem;
+}
+
+.navbar-menu li {
+    cursor: pointer;
+    text-transform: capitalize;
+    font-weight: 500;
+    position: relative;
+}
+
+.navbar-menu li:hover,
+.navbar-menu .active {
+    color: var(--primary-color);
+}
+
+/* Right Section (Search + Cart + Profile/Login) */
+.navbar-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+/* Search Bar */
+.search-bar {
+    display: flex;
+    align-items: center;
+    background-color: #f5f5f5;
+    border-radius: 20px;
+    overflow: hidden;
+    border: 1px solid #ddd;
+}
+
+.search-bar input {
+    border: none;
+    padding: 0.4rem 0.8rem;
+    outline: none;
+    background: transparent;
+    color: var(--text-color);
+    width: 150px;
+}
+
+.search-button {
+    background-color: transparent;
+    border: none;
+    padding: 0.4rem;
+    cursor: pointer;
+    color: var(--primary-color);
+}
+
+/* Icons */
+.navbar-icon {
+    font-size: 1.3rem;
+}
+
+.navbar-search-icon {
+    position: relative;
+    color: var(--primary-color);
+}
+
+.icon-wrapper {
+    position: relative;
+}
+
+.dot {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background-color: red;
+    border-radius: 50%;
+    height: 10px;
+    width: 10px;
+}
+
+/* Button (Login) */
+button {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 0.4rem 1rem;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: 0.2s;
+}
+
+button:hover {
+    background-color: #e65c00;
+}
+
+/* Profile Dropdown */
+.navbar-profile {
+    position: relative;
+    cursor: pointer;
+    color: var(--primary-color);
+}
+
+.navbar-profile-dropdown {
+    position: absolute;
+    top: 2.2rem;
+    right: 0;
+    background-color: var(--background-color);
+    border: 1px solid #eee;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    width: 150px;
+    padding: 0.5rem 0;
+    display: none;
+    z-index: 20;
+}
+
+.navbar-profile:hover .navbar-profile-dropdown {
+    display: block;
+}
+
+.navbar-profile-dropdown li {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    color: var(--text-color);
+}
+
+.navbar-profile-dropdown li:hover {
+    background-color: var(--hover-color);
+}
+
+.navbar-profile-dropdown hr {
+    margin: 0.3rem 0;
+    border: 0.5px solid #eee;
+}
+
+/* Hamburger Icon */
+/* Hamburger Icon */
+.hamburger-icon {
+    font-size: 1.8rem;
+    cursor: pointer;
+    color: var(--primary-color);
+    display: none;
+}
+
+/* Mobile Menu */
+.mobile-menu {
+    position: fixed;
+    top: 70px;
+    left: 0;
+    width: 100%;
+    background-color: var(--background-color);
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    z-index: 99;
+    display: none;
+    flex-direction: column;
+    animation: slideDown 0.3s ease forwards;
+}
+
+.mobile-menu.active {
+    display: flex;  /* Ensure it is shown when active */
+}
+
+.mobile-menu ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+.mobile-menu li {
+    padding: 1rem;
+    text-align: center;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+    text-transform: capitalize;
+    font-weight: 500;
+    color: var(--text-color);
+}
+
+.mobile-menu li:hover {
+    background-color: var(--hover-color);
+    color: var(--primary-color);
+}
+
+/* Responsive Styling */
+@media screen and (max-width: 768px) {
+    .navbar-menu {
+        display: none;
+    }
+
+    .hamburger-icon {
+        display: block;
+    }
+
+    .search-bar input {
+        width: 100px;
+    }
+}
+
+/* Animation */
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
