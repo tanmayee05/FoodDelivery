@@ -17,7 +17,6 @@ const Order = () => {
         toast.error("Error fetching orders.");
       }
     } catch (error) {
-      console.error("Error fetching orders:", error);
       toast.error("Error fetching orders.");
     }
   };
@@ -35,7 +34,6 @@ const Order = () => {
         toast.error("Failed to update status.");
       }
     } catch (error) {
-      console.error("Error updating status:", error);
       toast.error("Error updating status.");
     }
   };
@@ -44,16 +42,14 @@ const Order = () => {
     fetchAllOrders();
   }, []);
 
-  // Filter orders based on selected status
-  const filteredOrders = filterStatus === "All" 
-    ? orders 
+  const filteredOrders = filterStatus === "All"
+    ? orders
     : orders.filter(order => order.status === filterStatus);
 
   return (
     <div className='order add'>
       <h3>Order Page</h3>
 
-      {/* Filter Dropdown */}
       <div className="filter-container">
         <label>Filter Orders:</label>
         <select value={filterStatus} onChange={(e) => setFilterStatus(e.target.value)}>
@@ -71,22 +67,24 @@ const Order = () => {
             <img src={assets.parcel_icon} alt="" />
             <div>
               <p className='order-item-food'>
-                {order.items.map((item, index) => 
-                  `${item.name} x ${item.quantity}${index === order.items.length - 1 ? '' : ', '}`
-                )}
+                {order.items.map((item, i) => `${item.name} x ${item.quantity}${i === order.items.length - 1 ? '' : ', '}`)}
               </p>
-              <p className='order-item-name'>{order.address.firstName + " " + order.address.lastName}</p>
+              <p className='order-item-name'>{order.address.firstName} {order.address.lastName}</p>
               <div className='order-item-address'>
-                <p>{order.address.street + ","}</p>
-                <p>{order.address.city + ", " + order.address.state + ", " + order.address.country + ", " + order.address.zipcode}</p>
+                <p>{order.address.street}</p>
+                <p>{order.address.city}, {order.address.state}, {order.address.country}, {order.address.zipcode}</p>
               </div>
               <p className='order-item-phone'>{order.address.phone}</p>
-<p className='order-item-date'>Placed on: {new Date(order.createdAt).toLocaleString()}</p>
-
+              <p className='order-item-date'>Placed on: {new Date(order.createdAt).toLocaleString()}</p>
+              {order.feedback && (
+                <div className='order-feedback'>
+                  <p><strong>Feedback:</strong> {order.feedback}</p>
+                  <p><strong>Rating:</strong> {order.rating} ★</p>
+                </div>
+              )}
             </div>
             <p>Items: {order.items.length}</p>
             <p>{currency}{order.amount}</p>
-
             {order.status === "User Canceled" ? (
               <p className="canceled-text">User has canceled the order</p>
             ) : (

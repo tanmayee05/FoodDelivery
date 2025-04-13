@@ -132,3 +132,29 @@
     margin-top: 5px;
   }
   
+  .order-feedback {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #fdf2e9;
+    border: 1px solid #ffccbc;
+    border-radius: 6px;
+    font-size: 13px;
+    line-height: 1.4;
+    color: #333;
+  }
+  
+  .order-feedback strong {
+    color: #f42d0f;
+    display: block;
+    margin-bottom: 4px;
+  }
+  
+  .order-feedback p {
+    margin: 4px 0;
+  }
+  
+  .order-feedback p:last-of-type {
+    font-weight: bold;
+    color: tomato;
+  }
+  

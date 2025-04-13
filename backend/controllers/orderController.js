@@ -155,8 +155,17 @@ const cancelOrder = async (req, res) => {
 };
 
 
+const addFeedback = async (req, res) => {
+    try {
+      const { orderId, feedback, rating } = req.body;
+      await orderModel.findByIdAndUpdate(orderId, { feedback, rating });
+      res.json({ success: true, message: "Feedback submitted" });
+    } catch (error) {
+      res.json({ success: false, message: "Error submitting feedback" });
+    }
+  };
+  
 
 
 
-
-export { placeOrder, listOrders, userOrders, updateStatus, verifyOrder, placeOrderCod,cancelOrder  }
+export { placeOrder, listOrders, userOrders, updateStatus, verifyOrder, placeOrderCod,cancelOrder ,addFeedback }
