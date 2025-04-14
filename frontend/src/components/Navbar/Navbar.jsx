@@ -3,7 +3,7 @@ import './Navbar.css';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { StoreContext } from '../../Context/StoreContext';
 import { BiSearch } from 'react-icons/bi';
-import { MdShoppingCart } from 'react-icons/md';  
+import { MdShoppingCart } from 'react-icons/md';
 import { FiUser, FiLogOut } from 'react-icons/fi';
 import { AiOutlineShopping } from 'react-icons/ai';
 import { FaBars } from 'react-icons/fa';
@@ -19,9 +19,7 @@ const Navbar = ({ setShowLogin }) => {
     const [isMobileView, setIsMobileView] = useState(window.innerWidth <= 768);
 
     useEffect(() => {
-        const handleResize = () => {
-            setIsMobileView(window.innerWidth <= 768);
-        };
+        const handleResize = () => setIsMobileView(window.innerWidth <= 768);
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
     }, []);
@@ -32,41 +30,9 @@ const Navbar = ({ setShowLogin }) => {
         navigate('/');
     };
 
-    const goToOrders = () => navigate('/myorders');
-
-    const scrollToTopImage = () => {
-        const section = document.getElementById('top-image');
-        if (section) section.scrollIntoView({ behavior: 'smooth' });
-    };
-
-    const handleHomeClick = () => {
-        setMenu('home');
-        if (location.pathname !== '/') {
-            navigate('/');
-            setTimeout(scrollToTopImage, 100);
-        } else {
-            scrollToTopImage();
-        }
-        setHamburgerMenu(false);
-    };
-
-    const handleMenuClick = () => {
-        setMenu('menu');
-        setScrollToSection('explore-menu');
-        navigate('/');
-        setHamburgerMenu(false);
-    };
-
-    const handleAboutUsClick = () => {
-        setMenu('about');
-        setScrollToSection('about-us-section');
-        navigate('/');
-        setHamburgerMenu(false);
-    };
-
-    const handleContactUsClick = () => {
-        setMenu('contact');
-        setScrollToSection('contact-us-section');
+    const handleNavigation = (sectionId, menuName) => {
+        setMenu(menuName);
+        setScrollToSection(sectionId);
         navigate('/');
         setHamburgerMenu(false);
     };
@@ -75,10 +41,6 @@ const Navbar = ({ setShowLogin }) => {
         const val = e.target.value;
         setSearchQuery(val);
         searchFood(val);
-        navigateAndScrollToFoodDisplay();
-    };
-
-    const navigateAndScrollToFoodDisplay = () => {
         if (location.pathname !== '/') navigate('/');
         setTimeout(() => {
             const section = document.getElementById('food-display');
@@ -89,8 +51,8 @@ const Navbar = ({ setShowLogin }) => {
     const handleSearchSubmit = (e) => {
         e.preventDefault();
         searchFood(searchQuery);
-        setScrollToSection('food-display');
         navigate('/');
+        setScrollToSection('food-display');
     };
 
     useEffect(() => {
@@ -110,19 +72,19 @@ const Navbar = ({ setShowLogin }) => {
                     <FaBars className="hamburger-icon" onClick={() => setHamburgerMenu(!hamburgerMenu)} />
                     <div className={`mobile-menu ${hamburgerMenu ? 'active' : ''}`}>
                         <ul>
-                            <li onClick={handleHomeClick}>Home</li>
-                            <li onClick={handleMenuClick}>Menu</li>
-                            <li onClick={handleAboutUsClick}>About Us</li>
-                            <li onClick={handleContactUsClick}>Contact Us</li>
+                            <li onClick={() => handleNavigation('top-image', 'home')}>Home</li>
+                            <li onClick={() => handleNavigation('explore-menu', 'menu')}>Menu</li>
+                            <li onClick={() => handleNavigation('about-us-section', 'about')}>About Us</li>
+                            <li onClick={() => handleNavigation('contact-us-section', 'contact')}>Contact Us</li>
                         </ul>
                     </div>
                 </>
             ) : (
                 <ul className="navbar-menu">
-                    <li onClick={handleHomeClick} className={menu === 'home' ? 'active' : ''}>home</li>
-                    <li onClick={handleMenuClick} className={menu === 'menu' ? 'active' : ''}>menu</li>
-                    <li onClick={handleAboutUsClick} className={menu === 'about' ? 'active' : ''}>about us</li>
-                    <li onClick={handleContactUsClick} className={menu === 'contact' ? 'active' : ''}>contact us</li>
+                    <li className={menu === 'home' ? 'active' : ''} onClick={() => handleNavigation('top-image', 'home')}>Home</li>
+                    <li className={menu === 'menu' ? 'active' : ''} onClick={() => handleNavigation('explore-menu', 'menu')}>Menu</li>
+                    <li className={menu === 'about' ? 'active' : ''} onClick={() => handleNavigation('about-us-section', 'about')}>About Us</li>
+                    <li className={menu === 'contact' ? 'active' : ''} onClick={() => handleNavigation('contact-us-section', 'contact')}>Contact Us</li>
                 </ul>
             )}
 
@@ -130,11 +92,11 @@ const Navbar = ({ setShowLogin }) => {
                 <form className="search-bar" onSubmit={handleSearchSubmit}>
                     <input
                         type="text"
-                        placeholder="Search food items..."
+                        placeholder="Search..."
                         value={searchQuery}
                         onChange={handleSearch}
                     />
-                    <button type="submit" className="search-button">
+                    <button type="submit">
                         <BiSearch className="navbar-icon" />
                     </button>
                 </form>
@@ -147,12 +109,12 @@ const Navbar = ({ setShowLogin }) => {
                 </Link>
 
                 {!token ? (
-                    <button onClick={() => setShowLogin(true)}>login</button>
+                    <button onClick={() => setShowLogin(true)}>Login</button>
                 ) : (
                     <div className="navbar-profile">
                         <FiUser className="navbar-icon" />
                         <ul className="navbar-profile-dropdown">
-                            <li onClick={goToOrders}>
+                            <li onClick={() => navigate('/myorders')}>
                                 <AiOutlineShopping /> <p>Orders</p>
                             </li>
                             <hr />

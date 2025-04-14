@@ -12,7 +12,7 @@
     display: grid;
     grid-template-columns: 1fr 1.5fr 1fr 1fr 1fr 0.5fr;
     align-items: center;
-    color: grey;
+    color: rgb(20, 15, 15);
     font-size: max(1vw, 12px);
 }
 
@@ -63,34 +63,7 @@
     cursor: pointer;
 }
 
-.cart-promocode {
-    flex: 1;
-}
-.cart-promocode p{
-    color: #555555;
-}
-.cart-promocode-input{
-    margin-top: 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #eaeaea;
-    border-radius: 4px;
-}
-.cart-promocode-input input{
-    background: transparent;
-    border: none;
-    outline: none;
-    padding-left: 10px;
-}
-.cart-promocode-input button{
-    width: max(10vw,150px);
-    padding: 12px 5px;
-    background-color: black;
-    border: none;
-    color: white;
-    border-radius: 4px;
-}
+
 
 @media(max-width:750px) {
     .cart-bottom {
@@ -109,18 +82,20 @@
   .quantity-btn {
     width: 30px;
     height: 30px;
-    background: #f0f0f0;
-    border: 1px solid #ddd;
+    background: #f8f4f4; /* Changed background to black */
+    color: #140a0a; /* Added white text color for contrast */
+    border: 1px solid #000; /* Keep border black for consistency */
     font-size: 16px;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 50px;
+    transition: background-color 0.3s ease; /* Add transition for hover effect */
   }
   
   .quantity-btn:hover {
-    background: #e0e0e0;
+    background: #c9c5c5; /* Darker black on hover */
   }
   
   .quantity-input {
@@ -130,3 +105,4 @@
     margin: 0 5px;
     border: 1px solid #ddd;
   }
+  

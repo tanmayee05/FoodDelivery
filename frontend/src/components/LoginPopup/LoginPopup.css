@@ -229,3 +229,65 @@
         transform: translateY(0);
     }
 }
+
+@media (max-width: 600px) {
+    .login-popup-container {
+      width: 90vw;
+      height: auto;
+      padding: 40px 20px;
+      font-size: 13px;
+      background-position: center bottom;
+      background-size: cover;
+      border-radius: 6px;
+    }
+  
+    .login-popup-inputs {
+      gap: 15px;
+    }
+  
+    .login-popup-inputs input {
+      padding: 8px;
+      font-size: 14px;
+    }
+  
+    .login-popup-container button {
+      padding: 10px;
+      font-size: 14px;
+    }
+  
+    .login-popup-title {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
+    }
+  
+    .login-popup-title img {
+      width: 20px;
+    }
+  
+    .reset-method-container,
+    .otp-input-container {
+      padding: 10px;
+      gap: 15px;
+    }
+  
+    .reset-method-buttons {
+      width: 100%;
+    }
+  
+    .reset-method-btn,
+    .back-btn {
+      padding: 10px;
+      font-size: 14px;
+    }
+  
+    .phone-input-container input {
+      font-size: 14px;
+      padding: 8px;
+    }
+  
+    .phone-format-hint {
+      font-size: 11px;
+    }
+  }
+  
